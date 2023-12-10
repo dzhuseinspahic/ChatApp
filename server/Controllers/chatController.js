@@ -1,14 +1,16 @@
-const chatModel = require("../Models/chatModel");
+const chatModel = require("../models/chatModel");
 
 const createChat = async (req, res) => {
-    const {userIds, type} = req.body;
+    let {userIds, type} = req.body;
     
     if (userIds !== undefined & userIds.length < 2) return res.status(400).json({"Error": "Chat must have at least 2 members!"});
     if (type === 'global') return res.status(422).json({"Validation error" : "You cannot create global chat!"});
     
     try{
+        if (type === undefined) type = 'private';
         const chat = await chatModel.find({
-            userIds: { $all: userIds }
+            userIds: { $all: userIds },
+            type: type
         });
         
         if (chat) return res.status(200).json(chat);

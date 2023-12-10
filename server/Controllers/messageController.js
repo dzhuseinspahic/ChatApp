@@ -1,4 +1,4 @@
-const messageModel = require("../Models/messageModel");
+const messageModel = require("../models/messageModel");
 
 const createMessage = async (req, res) => {
     const {chatId, senderId, text} = req.body;
@@ -31,4 +31,19 @@ const getMessagesByChatId = async (req, res) => {
     }
 }
 
-module.exports = {createMessage, getMessagesByChatId};
+const saveMessageToDb = async (senderId, chatId, text) => {
+    try {
+        const message = new messageModel({
+            chatId,
+            senderId,
+            text
+        });
+    
+        const response = await message.save();
+        return response;
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+module.exports = {createMessage, getMessagesByChatId, saveMessageToDb};

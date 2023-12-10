@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const chatModel = require('../Models/chatModel');
-const userModel = require('../Models/userModel');
+const chatModel = require('./chatModel');
+const userModel = require('./userModel');
 
 const connectDB = async() => {
     try{
