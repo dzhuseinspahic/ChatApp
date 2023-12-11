@@ -1,5 +1,6 @@
 const input = document.getElementById('message-input');
 const chatMessages = document.getElementById('chat-messages');
+const activeUsersDiv = document.querySelector('.active-users-list');
 
 const socket = io();
 
@@ -32,7 +33,6 @@ socket.on('message', (data) => {
             '<p class=\'time\'>' + data.time + '</p></div>' +
             '<div class=\'message-text\'>' + data.message + '</div></div>';
         chatMessages.scrollTop = chatMessages.scrollHeight;
-        console.log(input)
         input.value = '';
     }
 });
@@ -42,3 +42,12 @@ socket.on('join-user', (data) => {
         chatMessages.innerHTML += '<p> <strong>' + data.username + ' </strong>has joined</p>';
     }
 });
+
+socket.on('active-users', (data) => {
+    activeUsersDiv.innerHTML = '';
+    data.forEach(user => {
+        if (user !== username) { //onclick for private chat
+            activeUsersDiv.innerHTML += `<button type="button" class="btn btn-outline-light btn-sm">${user}</button>`;
+        }
+    });
+})

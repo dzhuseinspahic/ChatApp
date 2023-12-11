@@ -18,28 +18,23 @@ body {
 .active-users-container {
     width: 20%;
     padding: 20px;
-    background-color: #333;
-}
-
-.active-users-list {
-    overflow-y: auto;
-}
-
-.active-user-list ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-.active-user-list li {
-    margin-bottom: 10px;
-    cursor: pointer;
+    background-color: #354f35;
 }
 
 .active-users-container h4 {
     text-align: center;
-    color: #b5f160;
-  }
+    color: #ffffff;
+}
+
+.active-users-list {
+    overflow-y: auto;
+    text-align: center;
+}
+
+.active-users-list button{
+    width: 80%;
+    padding: 10px;
+}
 
 .chat-area {
     flex-grow: 1;

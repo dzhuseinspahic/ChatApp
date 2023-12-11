@@ -1,18 +1,25 @@
 const {saveMessageToDb} = require('../controllers/messageController');
 const {findUserByUsername} = require('../controllers/userController');
 
+var activeUsers = [];
+
 function socket(io) {
     io.on('connection', (socket) => {
         console.log('conn', io.engine.clientsCount);
     
         socket.on('join-user', (data) => {
-            //save to active users
+            if (activeUsers.indexOf(data.username) === -1) {
+                activeUsers.push(data.username);
+            }
 
             socket.join(data.chatId);
+            
             io.to(data.chatId).emit('join-user', {
                 username: data.username,
                 senderSocketId: socket.id
             });
+
+            io.to(data.chatId).emit('active-users', activeUsers);
         })
 
         socket.on('message', async (data) => {
