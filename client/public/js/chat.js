@@ -1,6 +1,7 @@
 const input = document.getElementById('message-input');
 const chatMessages = document.getElementById('chat-messages');
 const activeUsersDiv = document.querySelector('.active-users-list');
+const title = document.querySelector('.title-container');
 
 const socket = io();
 
@@ -19,6 +20,12 @@ function sendMessage() {
         });
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const h3 = document.createElement('h3');
+    h3.textContent = `Welcome ${username} to Chat App!`
+    title.appendChild(h3);
+});
 
 socket.emit('join-user', {
     username: username,

@@ -20,10 +20,10 @@ const registerUser = async (req, res) => {
         
         if (!name || !email || !password) return res.status(400).json("All fields are required.");
 
-        if (user) return res.status(400).json("User with this email already exists.");
-
         const emailPattern = /[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) return res.status(400).json("Invalid email address");
+        if (!emailPattern.test(email)) return res.status(400).json("Invalid email address.");
+
+        if (user) return res.status(400).json("User with this email already exists.");
 
         const username = generateUsername("", 1, length=20);
         const newUser = new userModel({
