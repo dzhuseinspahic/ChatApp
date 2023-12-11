@@ -6,6 +6,7 @@ const socketIO = require('socket.io');
 const db = require('./models/db');
 const messageRoute = require('./routes/messageRoute');
 const chatRoute = require('./routes/chatRoute');
+const userRoute = require('./routes/userRoute');
 
 db.connectDB(); 
 db.createGlobalChat();
@@ -24,12 +25,13 @@ app.use(express.static(path.join(__dirname, '../client/public')));
 app.use(express.json());
 app.use('/api/message', messageRoute);
 app.use('/api/chat', chatRoute);
+app.use('/api/user', userRoute);
 
 app.set('views', path.join(__dirname,'../client/views'));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-    res.render('main');
+    res.render('signin');
 });
 
 
