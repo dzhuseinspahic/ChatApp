@@ -5,8 +5,6 @@ var activeUsers = [];
 
 function socket(io) {
     io.on('connection', (socket) => {
-        console.log('conn', io.engine.clientsCount);
-
         socket.on('join-user', (data) => {
             if (activeUsers.indexOf(data.username) === -1) {
                 activeUsers.push(data.username);

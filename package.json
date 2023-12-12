@@ -13,7 +13,8 @@
     "unique-username-generator": "^1.2.0"
   },
   "scripts": {
-    "devStart": "nodemon server/server.js"
+    "devStart": "nodemon server/server.js",
+    "start": "node server/server.js"
   },
   "name": "server",
   "version": "1.0.0",
