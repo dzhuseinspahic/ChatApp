@@ -35,9 +35,18 @@ socket.emit('join-user', {
 socket.on('message', (data) => {
     console.log('mes client')
     if (data !== 'Error') {
+        const time = new Date(data.time);
+        const options = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: 'numeric',
+            minute: 'numeric'
+        }
+        const formattedDate = time.toLocaleString('en-US', options);
         chatMessages.innerHTML += 
             '<div class=\'message\'> <div class=\'message-info\'><p class=\'username\'>' + data.username + '</strong>  </p>' +
-            '<p class=\'time\'>' + data.time + '</p></div>' +
+            '<p class=\'time\'>' + formattedDate + '</p></div>' +
             '<div class=\'message-text\'>' + data.message + '</div></div>';
         chatMessages.scrollTop = chatMessages.scrollHeight;
         input.value = '';
@@ -54,7 +63,7 @@ socket.on('active-users', (data) => {
     activeUsersDiv.innerHTML = '';
     data.forEach(user => {
         if (user !== username) { //onclick for private chat
-            activeUsersDiv.innerHTML += `<button type="button" class="btn btn-outline-light btn-sm">${user}</button>`;
+            activeUsersDiv.innerHTML += `<button type="button" class=" btn btn-outline-light btn-sm">${user}</button>`;
         }
     });
 })

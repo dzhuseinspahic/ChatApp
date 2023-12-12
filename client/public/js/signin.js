@@ -1,30 +1,32 @@
+const passwordRegister = document.getElementById('password');
+const emailRegister = document.getElementById('email');
+const nameRegister = document.getElementById('name');
+const feedback = document.querySelector('.email-div p');
+const emailDiv = document.querySelector('.email-div');
+const usernameLogin = document.getElementById('username-login');
+const passwordLogin = document.getElementById('password-login');
+
 async function register() {
-    const name = document.getElementById('name');
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
-    
-    const feedback = document.querySelector('.emailDiv p');
     if (feedback) feedback.remove();
 
+    if (nameRegister.value === '') nameRegister.classList.add('is-invalid');
+    else nameRegister.classList.remove('is-invalid');
 
-    if (name.value === '') name.classList.add('is-invalid');
-    else name.classList.remove('is-invalid');
-
-    if (email.value === '') email.classList.add('is-invalid');
-    else email.classList.remove('is-invalid');
+    if (emailRegister.value === '') emailRegister.classList.add('is-invalid');
+    else emailRegister.classList.remove('is-invalid');
     
-    if (password.value === '') password.classList.add('is-invalid');
-    else password.classList.remove('is-invalid');
+    if (passwordRegister.value === '') passwordRegister.classList.add('is-invalid');
+    else passwordRegister.classList.remove('is-invalid');
 
-    if (name.value === '' || !email.value === '' || !password.value === '') return;
+    if (nameRegister.value === '' || emailRegister.value === '' || passwordRegister.value === '') return;
 
     const response = await fetch('api/user/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            name: name.value, 
-            email: email.value, 
-            password: password.value
+            name: nameRegister.value, 
+            email: emailRegister.value, 
+            password: passwordRegister.value
         })
     });
 
@@ -32,7 +34,6 @@ async function register() {
 
     if (!response.ok) {
         if (data.includes('email')) {
-            const emailDiv = document.querySelector('.emailDiv');
             const p = document.createElement('p');
             p.textContent = data;
             emailDiv.appendChild(p);
@@ -42,7 +43,6 @@ async function register() {
         const globalChatId = await globalChat.json();
 
         //add user to global chat
-        console.log(data._id, globalChatId.id);
         await fetch('/api/chat/addUser', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
@@ -56,3 +56,40 @@ async function register() {
     }
 }
 
+async function login() {
+    if (usernameLogin.value === '') usernameLogin.classList.add('is-invalid');
+    else usernameLogin.classList.remove('is-invalid');
+
+    if (passwordLogin.value === '') passwordLogin.classList.add('is-invalid');
+    else passwordLogin.classList.remove('is-invalid');
+
+    if (usernameLogin.value === '' || usernameLogin.value === '') return;
+    console.log('proslo')
+    const response = await fetch('/api/user/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username: usernameLogin.value,
+            password: passwordLogin.value
+        })
+    });
+
+    const data = await response.json(); //user
+    console.log(data)
+    if (!response.ok) {
+        if (data.includes('Invalid password.')) passwordLogin.classList.add('is-invalid');
+        else {
+            usernameLogin.classList.add('is-invalid');
+            passwordLogin.classList.add('is-invalid');
+        }
+    } else {
+        const globalChat = await fetch(`/api/chat/${data._id}/globalId`);
+        const globalChatId = await globalChat.json();
+
+        window.location.href = `/chat?username=${data.username}&chatId=${globalChatId._id}`;
+    }
+}
+
+function logout() {
+    window.location.href = '/';
+}

@@ -16,16 +16,16 @@ const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
 
     try {
-        const user = await userModel.findOne({email: email});
-        
         if (!name || !email || !password) return res.status(400).json("All fields are required.");
 
+        const user = await userModel.findOne({email: email});
+        
         const emailPattern = /[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(email)) return res.status(400).json("Invalid email address.");
 
         if (user) return res.status(400).json("User with this email already exists.");
 
-        const username = generateUsername("", 1, length=20);
+        const username = generateUsername("", length=15);
         const newUser = new userModel({
             name: name,
             email: email,
@@ -48,6 +48,8 @@ const loginUser = async (req, res) => {
     const { username, password } = req.body;
 
     try {
+        if (!username || !password) return res.status(400).json("All fields are required.");
+
         const user = await userModel.findOne({username: username});
         
         if (!user) return res.status(400).json("Invalid username or password.");
