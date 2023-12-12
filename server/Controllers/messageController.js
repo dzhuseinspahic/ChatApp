@@ -21,9 +21,17 @@ const createMessage = async (req, res) => {
 
 const getMessagesByChatId = async (req, res) => {
     const { chatId } = req.params;
+    const page = req.query.page;
+    const pageSize = 50;
+    const skip = (page - 1) * pageSize;
 
     try {
-        const messages = await messageModel.find({chatId: chatId});
+        const messages = await messageModel
+            .find({ chatId: chatId })
+            .sort({ timestamp: -1 })
+            .skip(skip)
+            .limit(pageSize);
+        
         res.status(200).json(messages);
     } catch(error) {
         console.log(error);

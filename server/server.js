@@ -2,7 +2,9 @@ const express = require('express');
 const http = require('http');
 const dotenv = require('dotenv').config();
 const path = require('path');
+const fs = require('fs');
 const bodyParser = require('body-parser');
+const mustache = require('mustache');
 const socketIO = require('socket.io');
 const db = require('./models/db');
 const messageRoute = require('./routes/messageRoute');
@@ -29,18 +31,17 @@ app.use('/api/message', messageRoute);
 app.use('/api/chat', chatRoute);
 app.use('/api/user', userRoute);
 
-app.set('views', path.join(__dirname,'../client/views'));
-app.set('view engine', 'ejs');
-
-
-
 app.get('/', (req, res) => {
-    res.render('signIn');
+    const template = fs.readFileSync('./client/views/signIn.mustache').toString('UTF-8');
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(mustache.render(template));
 });
 
 app.get('/chat', (req, res) => {
-    res.render('chat');
-})
+    const template = fs.readFileSync('./client/views/chat.mustache').toString('UTF-8');
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(mustache.render(template));
+});
 
 httpServer.listen(process.env.PORT, () => {
     console.log(`Server running at http://localhost:${process.env.PORT}`);

@@ -1,12 +1,12 @@
-const {saveMessageToDb} = require('../controllers/messageController');
-const {findUserByUsername} = require('../controllers/userController');
+const { saveMessageToDb, getGlobalMessages } = require('../controllers/messageController');
+const { findUserByUsername } = require('../controllers/userController');
 
 var activeUsers = [];
 
 function socket(io) {
     io.on('connection', (socket) => {
         console.log('conn', io.engine.clientsCount);
-    
+
         socket.on('join-user', (data) => {
             if (activeUsers.indexOf(data.username) === -1) {
                 activeUsers.push(data.username);
@@ -29,8 +29,8 @@ function socket(io) {
                 
                 io.to(data.chatId).emit('message', {
                     username: user.username,
-                    time: messageDb.timestamp, 
-                    message: messageDb.text,
+                    timestamp: messageDb.timestamp, 
+                    text: messageDb.text,
                 });
 
             } catch(error) {

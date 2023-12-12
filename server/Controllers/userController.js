@@ -12,6 +12,21 @@ const findUserByUsername = async (username) => {
     }
 }
 
+const getUserById = async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const user = await userModel.findById(userId);
+        
+        if (!user) return res.status(400).json('Cannot find user with this id.');
+
+        res.status(200).json(user);
+    } catch(error) {
+        console.log(error);
+        res.status(500).json(error);
+    }
+}
+
 const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
 
@@ -72,4 +87,4 @@ const loginUser = async (req, res) => {
     }
 }
 
-module.exports = {findUserByUsername, registerUser, loginUser};
+module.exports = {findUserByUsername, getUserById, registerUser, loginUser};
