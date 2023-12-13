@@ -28,6 +28,8 @@ body {
     width: 30%;
     padding: 20px;
     background-color: #25463C;
+    display: flex;
+    flex-direction: column;
 }
 
 .active-users-container h4 {

@@ -1,12 +1,12 @@
 const passwordRegister = document.getElementById('password');
 const emailRegister = document.getElementById('email');
 const nameRegister = document.getElementById('name');
-const feedback = document.querySelector('.email-div p');
 const emailDiv = document.querySelector('.email-div');
 const usernameLogin = document.getElementById('username-login');
 const passwordLogin = document.getElementById('password-login');
 
 async function register() {
+    const feedback = document.querySelector('.email-div p');
     if (feedback) feedback.remove();
 
     if (nameRegister.value === '') nameRegister.classList.add('is-invalid');
@@ -64,7 +64,7 @@ async function login() {
     else passwordLogin.classList.remove('is-invalid');
 
     if (usernameLogin.value === '' || usernameLogin.value === '') return;
-    console.log('proslo')
+
     const response = await fetch('/api/user/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -75,7 +75,7 @@ async function login() {
     });
 
     const data = await response.json(); //user
-    console.log(data)
+
     if (!response.ok) {
         if (data.includes('Invalid password.')) passwordLogin.classList.add('is-invalid');
         else {

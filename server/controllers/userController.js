@@ -50,7 +50,7 @@ const registerUser = async (req, res) => {
 
         await newUser.save();
 
-        const token = jwt.sign({userId: newUser._id, username: user.username}, process.env.JWT_SECRET_KEY, {expiresIn: "10h"});
+        const token = jwt.sign({userId: newUser._id, username: newUser.username}, process.env.JWT_SECRET_KEY, {expiresIn: "10h"});
 
         res.cookie('token', token, {
             httpOnly: true,

@@ -22,7 +22,7 @@ const createMessage = async (req, res) => {
 const getMessagesByChatId = async (req, res) => {
     const { chatId } = req.params;
     const page = req.query.page;
-    const pageSize = 50;
+    const pageSize = 30;
     const skip = (page - 1) * pageSize;
 
     try {

@@ -115,7 +115,12 @@ socket.on('active-users', (data) => {
     activeUsersDiv.innerHTML = '';
     data.forEach(user => {
         if (user !== username) { //onclick for private chat
-            activeUsersDiv.innerHTML += `<button type="button" class=" btn btn-outline-light btn-sm">${user}</button>`;
+            const div = document.createElement('div');
+            const button = document.createElement('button');
+            button.classList = 'btn btn-outline-light btn-sm';
+            button.textContent = user;
+            div.appendChild(button);
+            activeUsersDiv.appendChild(div);
         }
     });
-})
+});
