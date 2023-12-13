@@ -1,4 +1,4 @@
-const { saveMessageToDb, getGlobalMessages } = require('../controllers/messageController');
+const { saveMessageToDb } = require('../controllers/messageController');
 const { findUserByUsername } = require('../controllers/userController');
 
 var activeUsers = [];
@@ -17,7 +17,7 @@ function socket(io) {
                 senderSocketId: socket.id
             });
 
-            io.to(data.chatId).emit('active-users', activeUsers);
+            io.emit('active-users', activeUsers);
         })
 
         socket.on('message', async (data) => {
@@ -39,8 +39,10 @@ function socket(io) {
     
     
         
-        socket.on('disconnecting', ()=>{
-
+        socket.on('disconnecting', ()=> {
+            const index = activeUsers.indexOf(socket.username);
+            if (index !== -1) activeUsers.splice(index, 1);
+            io.emit('active-users', activeUsers);
         });
     })
 }

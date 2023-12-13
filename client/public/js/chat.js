@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     title.appendChild(h3);
 
     loadMoreMessages();
-    //chatMessages.scrollTop = chatMessages.scrollHeight; //scroll to the end of chat
 });
 
 function sendMessage() {

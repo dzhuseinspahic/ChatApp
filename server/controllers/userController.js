@@ -50,9 +50,12 @@ const registerUser = async (req, res) => {
 
         await newUser.save();
 
-        const token = jwt.sign({userId: newUser._id}, process.env.JWT_SECRET_KEY, {expiresIn: "10h"});
+        const token = jwt.sign({userId: newUser._id, username: user.username}, process.env.JWT_SECRET_KEY, {expiresIn: "10h"});
 
-        res.status(200).json({_id: newUser._id, name, email, username, token});
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: true
+        }).status(200).json({_id: newUser._id, name, email, username, token});
     } catch(error) {
         console.log(error);
         res.status(500).json(error);
@@ -73,18 +76,24 @@ const loginUser = async (req, res) => {
         
         if (!isValidPassword) return res.status(400).json("Invalid password.");
 
-        const token = jwt.sign({userId: user._id}, process.env.JWT_SECRET_KEY, {expiresIn: "10h"});
-        
-        res.status(200).json({
+        const token = jwt.sign({userId: user._id, username: user.username}, process.env.JWT_SECRET_KEY, {expiresIn: "10h"});
+
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: true
+        }).status(200).json({
             _id: user._id, 
             name: user.name, 
             email: user.email, 
-            username: user.username, 
-            token: token});
+            username: user.username});
     } catch(error) {
         console.log(error);
         res.status(500).json(error);
     }
 }
 
-module.exports = {findUserByUsername, getUserById, registerUser, loginUser};
+const logoutUser = (req, res) => {
+    res.clearCookie('token').status(200).json('User logged out.');
+}
+
+module.exports = {findUserByUsername, getUserById, registerUser, loginUser, logoutUser};

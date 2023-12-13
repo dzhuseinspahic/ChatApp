@@ -91,5 +91,9 @@ async function login() {
 }
 
 function logout() {
+    fetch('/api/user/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+    });
     window.location.href = '/';
 }
