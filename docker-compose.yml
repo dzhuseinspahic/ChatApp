@@ -13,7 +13,7 @@ services:
     ports: 
      - 4000:3000
     environment:
-      MONGO_URI: "mongodb+srv://dhuseinspa1:evolt@chatapp.91eim9s.mongodb.net/ChatApplication"
+      MONGO_URI: "mongodb+srv://user:pass@cluster0.example.mongodb.net/ChatApplication"
       PORT: 3000
       JWT_SECRET_KEY: secretkey123
     depends_on:

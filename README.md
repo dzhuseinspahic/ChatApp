@@ -50,7 +50,7 @@ Before running the application, ensure that you have Node.js installed on your m
 3. **Create .env file**
    Create **.env** file in the root directory. Replace placeholder values with your actual configuration details.
    ```bash
-   MONGO_URI = "mongodb+srv://user:password@chatapp.91eim9s.mongodb.net/ChatApplication"
+   MONGO_URI = "mongodb+srv://user:pass@cluster0.example.mongodb.net/ChatApplication"
    PORT = 3000
    JWT_SECRET_KEY = secret
 
